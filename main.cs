@@ -209,6 +209,9 @@ namespace EnhancedVehicleLightingControls
                 Game.EnableControlThisFrame(GTA.Control.VehicleBrake);
                 Game.EnableControlThisFrame(GTA.Control.VehicleHorn);
                 Game.EnableControlThisFrame(GTA.Control.VehicleLookBehind);
+                Game.EnableControlThisFrame(GTA.Control.LookLeftRight);
+                Game.EnableControlThisFrame(GTA.Control.LookUpDown);
+                Game.EnableControlThisFrame(GTA.Control.VehicleMoveLeftRight);
 
                 if (Game.IsControlJustReleased(sirenToggleButton))
                     ToggleSiren();
