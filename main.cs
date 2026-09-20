@@ -131,10 +131,10 @@ namespace EnhancedVehicleLightingControls
         #region Proc
         private void IndicatorsManagment(){
 
-            if(!IsInVehicle()||!HasIndicatorOn()||IsQuickIndicator()) return;
+            if(!IsInVehicle||!HasIndicatorOn||IsQuickIndicator) return;
     
                 
-            if(IsRightIndicatorOn()){
+            if(IsRightIndicatorOn){
 
                     if(GetVehicle().SteeringAngle < -TurnThreshold ) hasTurnedRight = true;
                     else if(hasTurnedRight && Math.Abs(GetVehicle().SteeringAngle) < ResetThreshold){
@@ -145,7 +145,7 @@ namespace EnhancedVehicleLightingControls
             }else{
                 hasTurnedRight = false;
             }
-            if(IsLeftIndicatorOn()){
+            if(IsLeftIndicatorOn){
 
                 if(GetVehicle().SteeringAngle > TurnThreshold ) hasTurnedLeft = true;
                 else if(hasTurnedLeft && Math.Abs(GetVehicle().SteeringAngle) < ResetThreshold){
@@ -162,9 +162,9 @@ namespace EnhancedVehicleLightingControls
 
         private void QuickIndicatorManagment(){
 
-            if(!IsInVehicle()||!HasIndicatorOn()||!IsQuickIndicator()) return;
+            if(!IsInVehicle||!HasIndicatorOn||!IsQuickIndicator) return;
             if(DateTimeOffset.UtcNow.ToUnixTimeSeconds() - currentTimeStamp >= indicatorSecondEllapsedTime ){
-                QuickIndicator( IsRightIndicatorOn()? RIGHT_DIRECTION : LEFT_DIRECTION, false);
+                QuickIndicator( IsRightIndicatorOn? RIGHT_DIRECTION : LEFT_DIRECTION, false);
             }    
 
         }
@@ -200,7 +200,7 @@ namespace EnhancedVehicleLightingControls
         
         private void GamePad()
         {
-            if (Game.IsControlPressed(modifierButton) && IsInVehicle())
+            if (Game.IsControlPressed(modifierButton) && IsInVehicle)
             {
         
                 // Disable all player controls except for some driving functions.
@@ -258,7 +258,7 @@ namespace EnhancedVehicleLightingControls
         * @return   void
         */
         private void ToggleSiren(){
-            if(!IsInVehicle()) return;
+            if(!IsInVehicle) return;
             ActiveSoundOfSiren(GetVehicle().IsSirenSilent);
         }
 
@@ -273,7 +273,7 @@ namespace EnhancedVehicleLightingControls
         * @return   void
         */
         private void ActiveSoundOfSiren(bool sirenState){
-            if(!IsInVehicle()) return;
+            if(!IsInVehicle) return;
             if(GetVehicle().HasSiren){
                 if(!GetVehicle().IsSirenActive&&sirenState) GetVehicle().IsSirenActive = true;
                 if(GetVehicle().IsSirenSilent == !sirenState ) return;
@@ -290,7 +290,7 @@ namespace EnhancedVehicleLightingControls
         * @return   void
         */
         public void HoldSiren(bool state){
-            if(!IsInVehicle()) return;
+            if(!IsInVehicle) return;
             if(!GetVehicle().IsSirenActive&&state){
                 GetVehicle().IsSirenActive = state;
                 HazardsState(true);
@@ -306,7 +306,7 @@ namespace EnhancedVehicleLightingControls
         * @return   void
         */
         private void ToggleFullBeams(){
-            if(!IsInVehicle()) return;
+            if(!IsInVehicle) return;
             if (GetVehicle().AreLightsOn)GetVehicle().AreHighBeamsOn = !GetVehicle().AreHighBeamsOn;
         }
 
@@ -318,7 +318,7 @@ namespace EnhancedVehicleLightingControls
         * @return   void
         */
         private void ToggleInteriorLights(){
-            if(!IsInVehicle()) return;
+            if(!IsInVehicle) return;
             GetVehicle().IsInteriorLightOn = !GetVehicle().IsInteriorLightOn;
         }
 
@@ -331,7 +331,7 @@ namespace EnhancedVehicleLightingControls
         * @name     HasHazards
         * @return   boolean
         */
-        private bool AreHazardsOn(){return IsLeftIndicatorOn() && IsRightIndicatorOn();}
+        private bool AreHazardsOn => IsLeftIndicatorOn && IsRightIndicatorOn;
 
         /***
         * <pre>
@@ -340,7 +340,7 @@ namespace EnhancedVehicleLightingControls
         * @name     HasIndicatorOn
         * @return   boolean
         */
-        private bool HasIndicatorOn(){ return IsRightIndicatorOn()||IsLeftIndicatorOn(); }
+        private bool HasIndicatorOn => IsRightIndicatorOn||IsLeftIndicatorOn;
 
         /***
         * <pre>
@@ -349,7 +349,7 @@ namespace EnhancedVehicleLightingControls
         * @name     HasLeftIndicatorOn
         * @return   boolean
         */
-        private bool IsLeftIndicatorOn(){return GetVehicle().IsLeftIndicatorLightOn;}
+        private bool IsLeftIndicatorOn => GetVehicle().IsLeftIndicatorLightOn;
 
         /***
         * <pre>
@@ -358,7 +358,7 @@ namespace EnhancedVehicleLightingControls
         * @name     HasRightIndicatorOn
         * @return   boolean
         */
-        private bool IsRightIndicatorOn(){return GetVehicle().IsRightIndicatorLightOn;}
+        private bool IsRightIndicatorOn => GetVehicle().IsRightIndicatorLightOn;
 
         /***
         * <pre>
@@ -367,7 +367,7 @@ namespace EnhancedVehicleLightingControls
         * @name     ToggleHazards
         * @return   void
         */
-        private void ToggleHazards(){HazardsState(!AreHazardsOn());}
+        private void ToggleHazards(){HazardsState(!AreHazardsOn);}
 
         /***
         * <pre>
@@ -387,8 +387,8 @@ namespace EnhancedVehicleLightingControls
         * @return   void
         */
         private void ToggleRightIndicator(){
-            if (AreHazardsOn()) return;
-            SetIndicators(false, !IsRightIndicatorOn());
+            if (AreHazardsOn) return;
+            SetIndicators(false, !IsRightIndicatorOn);
         }
 
         /***
@@ -399,8 +399,8 @@ namespace EnhancedVehicleLightingControls
         * @return   void
         */
         private void ToggleLeftIndicator(){
-            if (AreHazardsOn()) return;
-            SetIndicators(!IsLeftIndicatorOn(), false);
+            if (AreHazardsOn) return;
+            SetIndicators(!IsLeftIndicatorOn, false);
         }
 
         /***
@@ -415,7 +415,7 @@ namespace EnhancedVehicleLightingControls
         * @return   void
         */
         private void SetIndicators(bool leftIndicator = false, bool rightIndicator = false){
-            if(!IsInVehicle()) return;
+            if(!IsInVehicle) return;
             Vehicle vehicle = GetVehicle();
             vehicle.IsLeftIndicatorLightOn  = leftIndicator;
             vehicle.IsRightIndicatorLightOn = rightIndicator;
@@ -428,7 +428,7 @@ namespace EnhancedVehicleLightingControls
         * @name     IsQuickIndicator
         * @return   boolean
         */
-        private bool IsQuickIndicator(){ return currentTimeStamp>0; }
+        private bool IsQuickIndicator => currentTimeStamp > 0;
 
         /***
         * <pre>
@@ -445,8 +445,8 @@ namespace EnhancedVehicleLightingControls
         */
         private bool QuickIndicator(int direction, bool state){
 
-            if(!IsInVehicle()||AreHazardsOn()) return false;
-            if (IsQuickIndicator()&&state || direction == RESET_DIRECTION) SetIndicators(false,false);
+            if(!IsInVehicle||AreHazardsOn) return false;
+            if (IsQuickIndicator&&state || direction == RESET_DIRECTION) SetIndicators(false,false);
 
             if (direction == RIGHT_DIRECTION) SetIndicators(false,state);
             if (direction == LEFT_DIRECTION) SetIndicators(state,false);
@@ -454,12 +454,12 @@ namespace EnhancedVehicleLightingControls
 
             currentTimeStamp = state ? DateTimeOffset.UtcNow.ToUnixTimeSeconds() : -1;
 
-            return IsQuickIndicator();
+            return IsQuickIndicator;
         }
 
 
         private void BreakLights(bool state){
-            if(!IsInVehicle()||GetVehicle().IsSirenActive) return;
+            if(!IsInVehicle||GetVehicle().IsSirenActive) return;
             GetVehicle().AreBrakeLightsOn = state;
         }
         #endregion
@@ -480,7 +480,7 @@ namespace EnhancedVehicleLightingControls
 
         private Vehicle GetVehicle(){ return GetVehicle(GetPlayer());}
 
-        private bool IsInVehicle(){ return !ObjectIsNull(GetVehicle(GetPlayer())); }
+        private bool IsInVehicle => !ObjectIsNull(GetVehicle(GetPlayer()));
 
         private bool ObjectIsNull(object o){ return o==null; }
         /***/
