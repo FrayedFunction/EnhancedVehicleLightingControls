@@ -200,7 +200,10 @@ namespace EnhancedVehicleLightingControls
         
         private void GamePad()
         {
-            if (Game.IsControlPressed(modifierButton) && IsInVehicle)
+            if (!IsInVehicle)
+                return;
+
+            if (Game.IsControlPressed(modifierButton))
             {
         
                 // Disable all player controls except for some driving functions.
